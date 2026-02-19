@@ -1,4 +1,4 @@
-const API_URL = '/api/contacts';
+const API_URL = 'https://d17jel4l5ekykm.cloudfront.net/api/contacts';
 
 // DOM Elements
 const contactsList = document.getElementById('contactsList');
