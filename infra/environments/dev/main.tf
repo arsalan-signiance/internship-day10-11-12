@@ -6,6 +6,11 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 5.40"
     }
+
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.0"
+    }
   }
 }
 
@@ -111,3 +116,19 @@ module "cloudfront" {
 
   alb_dns_name   = module.alb.alb_dns_name
 }
+
+module "rds" {
+  source = "../../modules/rds"
+
+
+  environment     = "contact-manager-dev"
+  vpc_id          = module.vpc.vpc_id
+  vpc_cidr        = var.vpc_cidr
+  db_subnet_ids   = module.vpc.private_subnet_ids
+
+  db_name                = "contact_manager"
+  db_username            = "admin"
+  db_password            = var.db_password
+
+}
+

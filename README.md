@@ -24,7 +24,6 @@ The backend exposes Prometheus metrics which are collected by Amazon Managed Ser
 All infrastructure components are provisioned and managed using Terraform with a modular structure.
 
 ---
-
 # Architecture Overview
 
 ## Frontend Layer

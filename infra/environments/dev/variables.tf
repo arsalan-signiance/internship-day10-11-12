@@ -47,3 +47,7 @@ variable "alert_email" {
   type        = string
   description = "Email address for SNS subscription (must confirm the email)."
 }
+
+variable "db_password" {
+  sensitive = true
+}

@@ -1,5 +1,9 @@
+resource "random_id" "suffix" {
+  byte_length = 4
+}
+
 resource "aws_s3_bucket" "this" {
-  bucket = "${var.name_prefix}-frontend"
+  bucket = "${var.name_prefix}-frontend-${random_id.suffix.hex}"
   tags   = var.tags
 }
 

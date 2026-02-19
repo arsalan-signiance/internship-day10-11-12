@@ -55,8 +55,15 @@ resource "aws_eip" "nat" {
 resource "aws_nat_gateway" "this" {
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.public[0].id
-  tags          = merge(var.tags, { Name = "${var.name_prefix}-nat" })
-  depends_on    = [aws_internet_gateway.this]
+
+  tags = merge(var.tags, { Name = "${var.name_prefix}-nat" })
+
+  depends_on = [
+    aws_internet_gateway.this,
+    aws_route.public_internet,
+    aws_route_table_association.public[0],
+    aws_route_table_association.public[1]
+  ]
 }
 
 resource "aws_route_table" "private" {

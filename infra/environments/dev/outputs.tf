@@ -17,3 +17,7 @@ output "amp_workspace_id" {
 output "sns_topic_arn" {
   value = module.iam.sns_topic_arn
 }
+
+output "rds_endpoint" {
+  value = module.rds.db_endpoint
+}
