@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Under Maintenance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .maintenance-container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .icon-container {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: var(--text-color);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        p {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .monitor-icon {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="maintenance-container">
+        <div class="icon-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                class="monitor-icon" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+        </div>
+        <h1>We'll be right back!</h1>
+        <p>Our servers are currently undergoing scheduled maintenance to improve your experience. Please check back in a
+            few minutes.</p>
+        <button id="checkStatusBtn" class="primary-btn" style="width: 100%; justify-content: center;">
+            Check Status
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('checkStatusBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('checkStatusBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Checking...';
+            btn.style.opacity = '0.7';
+
+            try {
+                // Assuming API_URL is strictly on port 8000 for verified backend
+                const response = await fetch('http://localhost:8000/api/health');
+                if (response.ok) {
+                    window.location.href = 'index.html';
+                } else {
+                    throw new Error('Still down');
+                }
+            } catch (e) {
+                setTimeout(() => {
+                    btn.innerHTML = 'Still down. Try again?';
+                    btn.style.opacity = '1';
+                }, 500);
+            }
+        });
+
+        // Auto-check every 30 seconds
+        setInterval(async () => {
+            try {
+                const response = await fetch('/api/health');
+                if (response.ok) {
+                    window.location.href = 'index.html';
+                }
+            } catch (e) { }
+        }, 30000);
+    </script>
+</body>
+
+</html>
